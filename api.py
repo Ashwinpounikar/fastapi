@@ -93,11 +93,19 @@ def translate_to_hindi(text):
 def text_to_speech(text):
     try:
         tts = gTTS(text=text, lang="hi")
-        temp_audio = tempfile.NamedTemporaryFile(delete=False, suffix=".mp3")
-        tts.save(temp_audio.name)
-        return temp_audio.name
-    except:
+        audio_path = os.path.join("audio_files", "news_audio.mp3")  # Fixed path
+        os.makedirs("audio_files", exist_ok=True)  # Ensure directory exists
+        tts.save(audio_path)
+        return audio_path  # Return the path instead of a temp file
+    except Exception as e:
         return None
+    # try:
+    #     tts = gTTS(text=text, lang="hi")
+    #     temp_audio = tempfile.NamedTemporaryFile(delete=False, suffix=".mp3")
+    #     tts.save(temp_audio.name)
+    #     return temp_audio.name
+    # except:
+    #     return None
 
 @app.post("/fetch-news")
 async def fetch_news(request: NewsRequest):
