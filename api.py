@@ -90,8 +90,8 @@ def translate_to_hindi(text):
         return text
 
 # Function to convert text to Hindi speech
-def text_to_speech(text):
-    def text_to_speech(text, filename="news_audio.mp3"):
+#def text_to_speech(text):
+def text_to_speech(text, filename="news_audio.mp3"):
     try:
         tts = gTTS(text=text, lang="hi")
         audio_folder = "audio_files"
