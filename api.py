@@ -122,6 +122,13 @@ async def fetch_news(request: NewsRequest):
 @app.get("/")  
 async def root():
     return {"message": "FastAPI is running successfully on Render!"}
+
+@app.get("/download-audio")
+async def download_audio():
+    audio_path = "audio_files/news_audio.mp3"
+    if os.path.exists(audio_path):
+        return FileResponse(audio_path, media_type="audio/mpeg", filename="news_audio.mp3")
+    return {"error": "Audio file not found"}
     
 @app.get("/download-json")
 async def download_json(filename: str):
