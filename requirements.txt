@@ -9,7 +9,7 @@ vaderSentiment
 textblob
 deep-translator
 pydantic
-os
+
 fastapi
 uvicorn
 requests
