@@ -110,7 +110,11 @@ async def fetch_news(request: NewsRequest):
         json.dump(news_data, json_file, indent=4, ensure_ascii=False)
 
     return {"news_data": news_data, "json_file": json_filename}
-
+    
+@app.get("/")  
+async def root():
+    return {"message": "FastAPI is running successfully on Render!"}
+    
 @app.get("/download-json")
 async def download_json(filename: str):
     return FileResponse(filename, media_type="application/json", filename=filename)
