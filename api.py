@@ -91,14 +91,24 @@ def translate_to_hindi(text):
 
 # Function to convert text to Hindi speech
 def text_to_speech(text):
+    def text_to_speech(text, filename="news_audio.mp3"):
     try:
         tts = gTTS(text=text, lang="hi")
-        audio_path = os.path.join("audio_files", "news_audio.mp3")  # Fixed path
-        os.makedirs("audio_files", exist_ok=True)  # Ensure directory exists
+        audio_folder = "audio_files"
+        os.makedirs(audio_folder, exist_ok=True)  # Create folder if not exists
+        audio_path = os.path.join(audio_folder, filename)
         tts.save(audio_path)
-        return audio_path  # Return the path instead of a temp file
+        return audio_path  # Return the correct file path
     except Exception as e:
         return None
+    # try:
+    #     tts = gTTS(text=text, lang="hi")
+    #     audio_path = os.path.join("audio_files", "news_audio.mp3")  # Fixed path
+    #     os.makedirs("audio_files", exist_ok=True)  # Ensure directory exists
+    #     tts.save(audio_path)
+    #     return audio_path  # Return the path instead of a temp file
+    # except Exception as e:
+    #     return None
     # try:
     #     tts = gTTS(text=text, lang="hi")
     #     temp_audio = tempfile.NamedTemporaryFile(delete=False, suffix=".mp3")
@@ -111,6 +121,16 @@ def text_to_speech(text):
 async def fetch_news(request: NewsRequest):
     urls = get_news_urls(request.company, request.num_articles)
     news_data = [extract_news_data(url) for url in urls]
+
+    for i, url in enumerate(urls):
+        news_item = extract_news_data(url)
+        if news_item["audio_file"]:
+            news_item["audio_file"] = f"https://your-fastapi-app.onrender.com/download-audio?filename={news_item['audio_file']}"
+        news_data.append(news_item)
+
+    return {"news_data": news_data}
+
+
     
     # Save results to JSON
     json_filename = f"{request.company}_news.json"
